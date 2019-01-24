@@ -1,4 +1,4 @@
-# ansible-bigtop-zookeeper
+# langerma-ansible-zookeeper
 
 an ansible role to install and configure zookeeper-server on rhel/centos 7
 
@@ -8,7 +8,7 @@ an ansible role to install and configure zookeeper-server on rhel/centos 7
   remote_user: vagrant
 
   roles:
-    - role: ansible-bigtop-zookeeper
+    - role: langerma-ansible-zookeeper
       zookeeper_hosts: "{{groups['master']}}"
       when: '"master" in group_names'
 ```
