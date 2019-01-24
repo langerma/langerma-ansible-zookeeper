@@ -1,0 +1,28 @@
+---
+zookeeper_install_tar: "http://mirror.klaus-uwe.me/apache/zookeeper/zookeeper-3.4.13/zookeeper-3.4.13.tar.gz"
+zookeeper_install_dir: "/opt/zookeeper"
+client_port: 2181
+tick_time: 30000
+max_session_timeout: 600000
+init_limit: 10
+sync_limit: 5
+zookeeper_autopurge_purgeInterval: 0
+zookeeper_autopurge_snapRetainCount: 10
+zookeeper_cluster_ports: "2888:3888"
+zookeeper_max_client_connections: 60
+
+zookeeper_data_dir: {{ zookeeper_install_dir }}/data
+zookeeper_log_dir: {{ zookeeper_install_dir }}/log
+zookeeper_conf_dir: {{ zookeeper_install_dir }}/conf
+
+zookeeper_hosts_hostname: "{{inventory_hostname}}"
+# List of dict (i.e. {zookeeper_hosts:[{host:,id:},{host:,id:},...]})
+zookeeper_hosts:
+  - host: "{{zookeeper_hosts_hostname}}" # the machine running
+    id: 1
+
+# Dict of ENV settings to be written into the (optional) conf/zookeeper-env.sh
+zookeeper_env: {}
+
+# Controls Zookeeper myid generation
+zookeeper_force_myid: yes

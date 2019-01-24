@@ -1,0 +1,28 @@
+- name: create {{ zookeeper_install_dir }}
+  file:
+    path: "{{ zookeeper_install_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Extract zookeeper into {{ zookeeper_install_dir }}
+  unarchive:
+    src: "{{ zookeeper_install_tar }}"
+    dest: "{{ zookeeper_install_dir }}"
+    extra_opts: [--strip-components=1]
+
+- name: Write myid file.
+  template:
+    src: myid.j2
+    dest: "{{ zookeeper_data_dir }}/myid"
+    owner: zookeeper
+    group: zookeeper
+    force: "{{ zookeeper_force_myid }}"
+#  notify:
+#    - Restart zookeeper
+
+- name: Configure zookeeper zoo.cfg
+  template:
+    src: zoo.cfg.j2
+    dest: "{{ zookeeper_conf_dir }}/conf/zoo.cfg"
+#  notify:
+#    - Restart zookeeper
