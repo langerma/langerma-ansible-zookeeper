@@ -11,9 +11,9 @@ zookeeper_autopurge_snapRetainCount: 10
 zookeeper_cluster_ports: "2888:3888"
 zookeeper_max_client_connections: 60
 
-zookeeper_data_dir: {{ zookeeper_install_dir }}/data
-zookeeper_log_dir: {{ zookeeper_install_dir }}/log
-zookeeper_conf_dir: {{ zookeeper_install_dir }}/conf
+zookeeper_data_dir: "{{ zookeeper_install_dir }}/data"
+zookeeper_log_dir: "{{ zookeeper_install_dir }}/log"
+zookeeper_conf_dir: "{{ zookeeper_install_dir }}/conf"
 
 zookeeper_hosts_hostname: "{{inventory_hostname}}"
 # List of dict (i.e. {zookeeper_hosts:[{host:,id:},{host:,id:},...]})

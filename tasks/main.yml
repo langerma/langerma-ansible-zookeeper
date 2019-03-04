@@ -4,10 +4,39 @@
     state: directory
     mode: 0755
 
+- name: Ensure group "zookeeper" exists
+  group:
+    name: zookeeper
+    gid: 5001
+    state: present
+
+- name: Add the user 'zookeeper' with a specific uid and a primary group of 'hadoop'
+  user:
+    name: zookeeper
+    uid: 5001
+    group: zookeeper
+    home: "{{ zookeeper_install_dir }}"
+
+- name: create {{ zookeeper_data_dir }}
+  file:
+    path: "{{ zookeeper_data_dir }}"
+    state: directory
+    owner: zookeeper
+    group: zookeeper
+
+- name: create {{ zookeeper_log_dir }}
+  file:
+    path: "{{ zookeeper_log_dir }}"
+    state: directory
+    owner: zookeeper
+    group: zookeeper
+
 - name: Extract zookeeper into {{ zookeeper_install_dir }}
   unarchive:
     src: "{{ zookeeper_install_tar }}"
     dest: "{{ zookeeper_install_dir }}"
+    owner: zookeeper
+    group: zookeeper
     extra_opts: [--strip-components=1]
 
 - name: Write myid file.
@@ -17,12 +46,21 @@
     owner: zookeeper
     group: zookeeper
     force: "{{ zookeeper_force_myid }}"
-#  notify:
-#    - Restart zookeeper
 
 - name: Configure zookeeper zoo.cfg
   template:
     src: zoo.cfg.j2
-    dest: "{{ zookeeper_conf_dir }}/conf/zoo.cfg"
-#  notify:
-#    - Restart zookeeper
+    dest: "{{ zookeeper_conf_dir }}/zoo.cfg"
+
+- name: Configure zookeeper java.env
+  template:
+    src: java.env.j2
+    dest: "{{ zookeeper_conf_dir }}/java.env"
+
+- name: copy zookeeper supervisord ini to {{ supervisord_ini_dir }}
+  template:
+    src: templates/zookeeper.ini.j2
+    dest: "{{ supervisord_ini_dir }}/zookeeper.ini"
+    owner: zookeeper
+    group: zookeeper
+    mode: "u=rw,g=r,o=r"
