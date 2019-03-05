@@ -51,11 +51,13 @@
   template:
     src: zoo.cfg.j2
     dest: "{{ zookeeper_conf_dir }}/zoo.cfg"
+  handlers: restart zookeeper
 
 - name: Configure zookeeper java.env
   template:
     src: java.env.j2
     dest: "{{ zookeeper_conf_dir }}/java.env"
+  handlers: restart zookeeper
 
 - name: copy zookeeper supervisord ini to {{ supervisord_ini_dir }}
   template:
@@ -64,3 +66,4 @@
     owner: zookeeper
     group: zookeeper
     mode: "u=rw,g=r,o=r"
+  handlers: update supervisord

@@ -3,7 +3,10 @@
   command: systemctl daemon-reload
   when: ansible_service_mgr == 'systemd'
 
-- name: Restart zookeeper
-  service:
-    name: zookeeper-server
-    state: restarted
+- name: "update supervisord"
+  shell: "supervisorctl update"
+  become: yes
+
+- name: "restart zookeeper"
+  shell: "supervisorctl restart zookeeper"
+  become: yes
